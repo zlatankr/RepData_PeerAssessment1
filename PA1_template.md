@@ -22,7 +22,9 @@ File <- read.csv("activity.csv")
 
 
 ```r
-hist(File$steps)
+totsteps <- aggregate(steps~date,File,sum)
+
+hist(totsteps$steps)
 ```
 
 ![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
@@ -31,19 +33,19 @@ hist(File$steps)
 
 
 ```r
-mean(File$steps, na.rm=TRUE)
+mean(totsteps$steps, na.rm=TRUE)
 ```
 
 ```
-## [1] 37.3826
+## [1] 10766.19
 ```
 
 ```r
-median(File$steps, na.rm=TRUE)
+median(totsteps$steps, na.rm=TRUE)
 ```
 
 ```
-## [1] 0
+## [1] 10765
 ```
 
 ## What is the average daily activity pattern?
@@ -103,7 +105,8 @@ merged$steps.y <- NULL
 Histogram
 
 ```r
-hist(merged$cleansteps)
+totsteps2 <- aggregate(cleansteps~date,merged,sum)
+hist(totsteps2$cleansteps)
 ```
 
 ![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png) 
@@ -111,11 +114,11 @@ hist(merged$cleansteps)
 Mean
 
 ```r
-mean(merged$cleansteps, na.rm=TRUE)
+mean(totsteps2$cleansteps, na.rm=TRUE)
 ```
 
 ```
-## [1] 37.38069
+## [1] 10765.64
 ```
 We can see that the mean of the dataset with the imputed values is lower than the incomplete dataset.
 This is not surprising given the fact that the majority of dataset has zeros.
@@ -124,13 +127,14 @@ This is not surprising given the fact that the majority of dataset has zeros.
 Median
 
 ```r
-median(merged$cleansteps, na.rm=TRUE)
+median(totsteps2$cleansteps, na.rm=TRUE)
 ```
 
 ```
-## [1] 0
+## [1] 10762
 ```
-We can see that the median is the same in both the imputed and incomplete datasets.
+We can see that the median of the dataset with the imputed values is also lower than the incomplete dataset.
+This is not surprising given the fact that the majority of dataset has zeros.
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
@@ -162,7 +166,7 @@ avgsteps2$cleansteps <- NULL
 dd <- unique(avgsteps2)
 ```
 
-2. Make a paned containing a time series plot of interval and average steps take by day.
+2. Make a panel containing a time series plot of interval and average steps take by day.
 
 ```r
 library(lattice)

@@ -19,14 +19,16 @@ File <- read.csv("activity.csv")
 1. Make a histogram of the total number of steps taken each day
 
 ```{r}
-hist(File$steps)
+totsteps <- aggregate(steps~date,File,sum)
+
+hist(totsteps$steps)
 ```
 
 2. Calculate and report the mean and median total number of steps taken per day.
 
 ```{r}
-mean(File$steps, na.rm=TRUE)
-median(File$steps, na.rm=TRUE)
+mean(totsteps$steps, na.rm=TRUE)
+median(totsteps$steps, na.rm=TRUE)
 ```
 
 ## What is the average daily activity pattern?
@@ -69,12 +71,13 @@ merged$steps.y <- NULL
 
 Histogram
 ```{r}
-hist(merged$cleansteps)
+totsteps2 <- aggregate(cleansteps~date,merged,sum)
+hist(totsteps2$cleansteps)
 ```
 
 Mean
 ```{r}
-mean(merged$cleansteps, na.rm=TRUE)
+mean(totsteps2$cleansteps, na.rm=TRUE)
 ```
 We can see that the mean of the dataset with the imputed values is lower than the incomplete dataset.
 This is not surprising given the fact that the majority of dataset has zeros.
@@ -82,9 +85,10 @@ This is not surprising given the fact that the majority of dataset has zeros.
 
 Median
 ```{r}
-median(merged$cleansteps, na.rm=TRUE)
+median(totsteps2$cleansteps, na.rm=TRUE)
 ```
-We can see that the median is the same in both the imputed and incomplete datasets.
+We can see that the median of the dataset with the imputed values is also lower than the incomplete dataset.
+This is not surprising given the fact that the majority of dataset has zeros.
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
@@ -108,7 +112,7 @@ avgsteps2$cleansteps <- NULL
 dd <- unique(avgsteps2)
 ```
 
-2. Make a paned containing a time series plot of interval and average steps take by day.
+2. Make a panel containing a time series plot of interval and average steps take by day.
 ```{r}
 library(lattice)
 xyplot(dd$Mean ~ dd$interval | dd$day, layout = c(2,1), type="l")
